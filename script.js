@@ -1,4 +1,7 @@
-const API_URL = "http://127.0.0.1:8000/api";
+// Detección automática: usa ruta relativa en la nube y localhost si estás probando en local
+const API_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
+    ? "http://127.0.0.1:8000/api" 
+    : "/api";
 
 let catalogoOficial = [];
 let asientosDB = [];
@@ -82,7 +85,7 @@ async function handleLogin(e) {
         sessionStorage.setItem('active_user_conta', JSON.stringify(usuarioActivo));
         await iniciarSesionApp();
     } catch (error) {
-        alert("Connection error with the Python server. Make sure to run 'uvicorn base:app --reload'.");
+        alert("Connection error with the Python server.");
     }
 }
 
@@ -243,7 +246,6 @@ async function triggerRaccoonAI(conceptText) {
     }
 }
 
-// RACCOON SIDEBAR CHAT FUNCTIONS
 async function sendRaccoonChat() {
     const input = document.getElementById('raccoonChatInput');
     const chatBox = document.getElementById('raccoonChatBox');
