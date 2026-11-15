@@ -1,10 +1,12 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List, Optional
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, create_engine
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker, Session
 from datetime import datetime
+import os
 
 # --- SQLITE DATABASE CONFIGURATION ---
 DATABASE_URL = "sqlite:///./contapro.db"
@@ -283,3 +285,7 @@ def raccoon_account_assistant(query: AIQuerySchema):
         "suggestion": suggestion,
         "tip": tip
     }
+
+# --- STATIC FILES (FRONTEND) ---
+# Sirve automáticamente index.html, style.css y script.js desde la raíz del proyecto
+app.mount("/", StaticFiles(directory=".", html=True), name="static")
