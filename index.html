@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-accent="purple">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.C | Professional Accounting System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="auth-screen" class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2>S.C | Professional Accounting System</h2>
+                <p>Financial accounting and audit management</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <button id="tab-login-btn" class="active" type="button" onclick="switchAuthTab('login')">Sign In</button>
+                <button id="tab-register-btn" type="button" onclick="switchAuthTab('register')">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="form-login" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="login-email">Email address</label>
+                    <input type="email" id="login-email" placeholder="contable@firma.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-pass">Password</label>
+                    <div class="password-field">
+                        <input type="password" id="login-pass" placeholder="Enter your password" required>
+                        <button type="button" class="btn-eye" onclick="togglePassword('login-pass', this)" aria-label="Show/Hide password">
+                            <svg class="eye-icon eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-icon eye-closed hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign in to system</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="form-register" class="hidden" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="reg-nombre">Full name</label>
+                    <input type="text" id="reg-nombre" placeholder="Juan Pérez" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Email address</label>
+                    <input type="email" id="reg-email" placeholder="user@firma.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-rol">System role</label>
+                    <select id="reg-rol" required>
+                        <option value="Accounting Assistant">Accounting Assistant</option>
+                        <option value="Senior Accountant">Senior Accountant</option>
+                        <option value="General Auditor">General Auditor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reg-pass">Password</label>
+                    <div class="password-field">
+                        <input type="password" id="reg-pass" placeholder="Create password" required>
+                        <button type="button" class="btn-eye" onclick="togglePassword('reg-pass', this)" aria-label="Show/Hide password">
+                            <svg class="eye-icon eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-icon eye-closed hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-purple">Create an account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN WORKSPACE -->
+    <div id="app-screen" class="app-wrapper hidden">
+        
+        <!-- SIDEBAR -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <span class="logo">🦝</span>
+                <h3 class="nav-text"> S.C |</h3>
+                <button type="button" class="btn-toggle-sidebar" onclick="toggleSidebar()" title="Collapse/Expand menu">◄</button>
+            </div>
+            
+            <nav class="nav-menu">
+                <button id="nav-diario" class="nav-btn active" onclick="navigateTo('diario')">
+                    <span class="nav-icon">📖</span><span class="nav-text">General journal</span>
+                </button>
+                <button id="nav-catalogo" class="nav-btn" onclick="navigateTo('catalogo')">
+                    <span class="nav-icon">🗃️</span><span class="nav-text">Chart of accounts</span>
+                </button>
+                <button id="nav-mayor" class="nav-btn" onclick="navigateTo('mayor')">
+                    <span class="nav-icon">📚</span><span class="nav-text">General ledger</span>
+                </button>
+                <button id="nav-balance" class="nav-btn" onclick="navigateTo('balance')">
+                    <span class="nav-icon">📈</span><span class="nav-text">Trial balance</span>
+                </button>
+                <button id="nav-auditoria" class="nav-btn" onclick="navigateTo('auditoria')">
+                    <span class="nav-icon">⌚</span><span class="nav-text">History</span>
+                </button>
+            </nav>
+
+            <!-- RACCOON ACCOUNT AI CHAT WIDGET IN SIDEBAR -->
+            <div class="raccoon-sidebar-widget nav-text">
+                <div class="raccoon-widget-header">
+                    <span>🦝 Raccoon AI</span>
+                    <span class="status-dot active"></span>
+                </div>
+                <div id="raccoonChatBox" class="raccoon-chat-box">
+                    <div class="raccoon-msg bot">Hi! Ask me accounting tips.</div>
+                </div>
+                <div class="raccoon-input-area">
+                    <input type="text" id="raccoonChatInput" placeholder="Ask Raccoon..." onkeypress="handleRaccoonKeyPress(event)">
+                    <button type="button" onclick="sendRaccoonChat()">Send</button>
+                </div>
+            </div>
+
+            <div class="sidebar-user">
+                <div class="user-details nav-text">
+                    <strong id="user-display-name">User</strong>
+                    <span id="user-display-role">User role</span>
+                </div>
+                <button class="btn-logout" onclick="logout()" title="Logout">Exit</button>
+            </div>
+        </aside>
+
+        <!-- MAIN PANEL -->
+        <main class="main-viewport">
+
+            <!-- TOP BAR & THEME -->
+            <header class="top-bar">
+                <div class="theme-dropdown-container">
+                    <button type="button" class="btn-theme-trigger" onclick="toggleThemeMenu()">🎨 Theme ▾</button>
+                    <div id="theme-menu" class="theme-menu-popup hidden">
+                        <div class="theme-menu-group">
+                            <label>Light/Dark mode:</label>
+                            <select id="theme-mode-select" onchange="cambiarModoBase(this.value)">
+                                <option value="dark">Dark mode</option>
+                                <option value="light">Light mode</option>
+                            </select>
+                        </div>
+                        <div class="theme-menu-group">
+                            <label>Color palette:</label>
+                            <div class="color-palette">
+                                <button type="button" class="color-dot purple" onclick="cambiarColorAcento('purple')" title="Purple"></button>
+                                <button type="button" class="color-dot red" onclick="cambiarColorAcento('red')" title="Red"></button>
+                                <button type="button" class="color-dot blue" onclick="cambiarColorAcento('blue')" title="Blue"></button>
+                                <button type="button" class="color-dot green" onclick="cambiarColorAcento('green')" title="Green"></button>
+                                <button type="button" class="color-dot orange" onclick="cambiarColorAcento('orange')" title="Orange"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- MODULE 1: GENERAL JOURNAL -->
+            <section id="diario" class="module-view active">
+                <div class="module-header">
+                    <h2>General journal — Accounting entries</h2>
+                    <p>Enter accounting vouchers with real-time double-entry validation.</p>
+                </div>
+
+                <div class="panel-card" style="margin-bottom: 20px;">
+                    <h3>New accounting entry</h3>
+                    <form id="form-partida" onsubmit="guardarPartida(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="partida-fecha">Date</label>
+                                <input type="date" id="partida-fecha" required>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="partida-concepto">Concept / Description</label>
+                                <input type="text" id="partida-concepto" placeholder="Example: Utility bill payment per invoice #102" required oninput="triggerRaccoonAI(this.value)">
+                                <span id="raccoonSuggestion" class="raccoon-suggestion" style="display: block; font-size: 0.8rem; color: var(--accent-primary); margin-top: 5px; font-style: italic;">🦝 Raccoon: Type a concept for AI account tips</span>
+                            </div>
+                        </div>
+
+                        <div style="margin: 15px 0;">
+                            <button type="button" class="btn btn-purple" onclick="agregarFilaMovimiento()">+ Add account row</button>
+                        </div>
+
+                        <table class="table-custom">
+                            <thead>
+                                <tr>
+                                    <th>Account name</th>
+                                    <th>Debit ($)</th>
+                                    <th>Credit ($)</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="body-filas-partida"></tbody>
+                            <tfoot>
+                                <tr style="font-weight: bold; background: var(--bg-panel);">
+                                    <td>TOTALS</td>
+                                    <td id="calc-total-debe">$0.00</td>
+                                    <td id="calc-total-haber">$0.00</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <div id="alerta-descuadre" class="alerta-error hidden" style="margin-top: 10px; padding: 10px; border-radius: 4px;">
+                            ⚠️ The entry is unbalanced. Total Debit must be strictly equal to Total Credit.
+                        </div>
+
+                        <div class="form-actions" style="margin-top: 15px;">
+                            <button type="submit" class="btn btn-primary">Register accounting entry</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="panel-card">
+                    <h3>Registered entries history</h3>
+                    <div id="historial-partidas-contenedor" style="margin-top: 15px;"></div>
+                </div>
+            </section>
+
+            <!-- MODULE 2: CHART OF ACCOUNTS -->
+            <section id="catalogo" class="module-view">
+                <div class="module-header">
+                    <h2>Chart of accounts</h2>
+                    <p>Standard account structure for Assets, Liabilities, Equity, Income, and Expenses.</p>
+                </div>
+                <div class="panel-card">
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Account name</th>
+                                <th>Classification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body-catalogo"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- MODULE 3: GENERAL LEDGER -->
+            <section id="mayor" class="module-view">
+                <div class="module-header">
+                    <h2>General ledger — T-Accounts</h2>
+                    <p>Automatic ledger posting grouped by account code.</p>
+                </div>
+                <div id="contenedor-mayor" class="panel-card"></div>
+            </section>
+
+            <!-- MODULE 4: TRIAL BALANCE -->
+            <section id="balance" class="module-view">
+                <div class="module-header">
+                    <h2>Trial balance</h2>
+                    <p>Summary of debit sums, credit sums, and adjusted balances.</p>
+                </div>
+                <div class="panel-card">
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Account</th>
+                                <th>Total Debit ($)</th>
+                                <th>Total Credit ($)</th>
+                                <th>Debit Balance ($)</th>
+                                <th>Credit Balance ($)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body-balance"></tbody>
+                        <tfoot>
+                            <tr style="font-weight: bold; background-color: var(--bg-panel);">
+                                <td colspan="2">CONSOLIDATED TOTALS</td>
+                                <td id="bal-total-debe">$0.00</td>
+                                <td id="bal-total-haber">$0.00</td>
+                                <td id="bal-total-sdeudor">$0.00</td>
+                                <td id="bal-total-sacreedor">$0.00</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </section>
+
+            <!-- MODULE 5: AUDIT LOG -->
+            <section id="auditoria" class="module-view">
+                <div class="module-header">
+                    <h2>Audit log</h2>
+                    <p>Immutable history of operations and actions within the system.</p>
+                </div>
+                <div class="panel-card">
+                    <table class="table-custom">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>Action</th>
+                                <th>Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body-auditoria"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
